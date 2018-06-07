@@ -3,14 +3,12 @@ const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-const cors = require('cors'); 
-const {CLIENT_ORIGIN} = require('./config');
-
-app.use(
-    cors({
-        origin: CLIENT_ORIGIN
-    })
-);
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Methods', 'POST, GET, PUT, DELETE, OPTIONS');
+  next();
+});
 
 app.get('/*', (req, res) => {
   res.json({ok: true});
