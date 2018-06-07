@@ -6,6 +6,6 @@ deploy:
   provider: heroku
   api_key:
     secure: JnA+Tk3CDpKZrjXgtXsa/Psnumyp4dEVwWPLxN6q+PIaMrlJOMC8iRo/gX4NYfBpvQSVwB8FsgEMFq5jDCcxWEgjNrzIj+gKkDx/S7YDLVgbZDOXNjyWvW+ixRrcW9YlUpUlvXrY1dNkCHVvYmYdm5TnEACcsVwFdAIOhfyWtJdXI+jVEstl/6ZvoKc4EvBXgkJ4OqWj7ac1vC2vt7DDDKm8UdpmWPlm8l4bRQLdrSXLJXU7az2QSXlT2WervdKbHnOUpySaXukXAd3hjv0a7hIr+GfhtOEorB6Nv7st4cpDNYDqFQqu47h3Vlo2EzWABm+9SFrKSs4SDuZSbnQLQCdgvQjVOgITHXygdpWSMD5+d8bPshnqvP/Gg7GE94MKTANgoVYzt64IyEtNn3B9aR/wUQAioiH277RMko1ziH63o6BRAQPJljBaH4OOXysqm/IY32Eeb8Uqprpkhq2ARc/G9Zsb3wVRRY76773nSATBVcwOwnmSSoYoolBo3TK22HgrThGl+0skN3kzgCm0uLykipGvUpNQ7wq4+k6DmhaYOPsjV9Um1gFfM8/cj5UDuUNs2oI97OhdYecNnMgQp7Tv85GuyKDb7UC7FAnC+3l6EI0p4q2eIVHmASrMb3vLeE53E+AHLg+NNLfAxdD39ipzKQT7bUC2BEXZUEYeO6U=
-  app: https://thawing-ravine-79238.herokuapp.com/
+  app: https://infinite-cove-16211.herokuapp.com/
   on:
     repo: jorgerodriguez434/chef-app-api
