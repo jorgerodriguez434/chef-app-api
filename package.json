@@ -4,6 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
+    "test": "mocha --exit",
     "start": "nodemon server.js"
   },
   "author": "",
