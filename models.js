@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const dishSchema = mongoose.Schema({
+const DishSchema = mongoose.Schema({
 
   name: String,
   type: String,
@@ -14,9 +14,9 @@ const dishSchema = mongoose.Schema({
   meatItems: Array,
   dairyItems: Array,
   eggItems: Array,
+  created: {type: Date, default: Date.now}
 
 });
 
-
-const Dish = mongoose.model('Dish', dishSchema);
-module.exports = Dish
+const Dish = mongoose.model('Dish', DishSchema);
+module.exports = {Dish};

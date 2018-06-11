@@ -10,7 +10,7 @@ describe('API', function() {
 
   it('should return 200 on GET requests', function() {
     return chai.request(app)
-      .get('/test')
+      .get('/api/dishes')
       .then(function(res) {
         res.should.be.json;
       });
