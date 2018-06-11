@@ -19,53 +19,52 @@ app.get("/api/dishes", (req, res) => {
 });
 
 app.post("/api/dishes", jsonParser, (req, res) => {
-  const {
-    name,
-    type,
-    category,
-    ingredients,
-    hasGluten,
-    hasMeat,
-    hasDairy,
-    hasEgg,
-    glutenItems,
-    meatItems,
-    dairyItems,
-    eggItems
-  } = req.body;
-  const isAnyPropertyMissing =
-    !name ||
-    !type ||
-    !category ||
-    !ingredients ||
-    !hasGluten ||
-    !hasMeat ||
-    !hasDairy ||
-    !hasEgg ||
-    !glutenItems ||
-    !meatItems ||
-    !dairyItems ||
-    !eggItems;
+  const requiredFields = [
+    "name",
+    "type",
+    "category",
+    "ingredients",
+    "hasGluten",
+    "hasMeat",
+    "hasDairy",
+    "hasEgg",
+    "glutenItems",
+    "meatItems",
+    "dairyItems",
+    "eggItems"
+  ];
 
-  if (isAnyPropertyMissing) {
-    console.log("All fields are required!");
-    return res.status(400).json({ Message: "All fields are required!" });
+   for (let i=0; i<requiredFields.length; i++) {
+    const field = requiredFields[i];
+    if (!(field in req.body)) {
+      const message = `Missing \`${field}\` in request body`
+      console.error(message);
+      return res.status(400).send(message);
+    }
   }
+
+/*  requiredFields.map(field => {
+    if (!(field in req.body)) {
+      const message = `Missing \'${field}\' in request body`;
+      console.error(message);
+      return res.status(400).send(message);
+    }
+  }); */
 
   console.log("making a POST request");
   Dish.create({
-    name,
-    type,
-    category,
-    ingredient,
-    hasGluten,
-    hasMeat,
-    hasDairy,
-    hasEgg,
-    glutenItems,
-    meatItems,
-    dairyItems,
-    eggItems
+    name: req.body.name,
+    type: req.body.type,
+    category: req.body.category,
+    ingredient: req.body.ingredient,
+    hasGluten: req.body.hasGluten,
+    hasMeat: req.body.hasMeat,
+    hasDairy: req.body.hasDairy,
+    hasEgg: req.body.hasEgg,
+    glutenItems: req.body.glutenItems,
+    meatItems: req.body.meatItems,
+    dairyItems: req.body.dairyItems,
+    eggItems: req.body.eggItems
   })
     .then(dish =>
       res.status(201).json({
