@@ -9,10 +9,6 @@ const jsonParser = bodyParser.json();
 const morgan = require("morgan");
 app.use(morgan("common"));
 
-const { DATABASE_URL } = require("./config");
-const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
-mongoose.connect(DATABASE_URL);
 
 app.get("/api/dishes", (req, res) => {
   res.json({ status: "success!" });
@@ -56,7 +52,7 @@ app.post("/api/dishes", jsonParser, (req, res) => {
     name: req.body.name,
     type: req.body.type,
     category: req.body.category,
-    ingredient: req.body.ingredient,
+    ingredients: req.body.ingredient,
     hasGluten: req.body.hasGluten,
     hasMeat: req.body.hasMeat,
     hasDairy: req.body.hasDairy,
@@ -75,3 +71,4 @@ app.post("/api/dishes", jsonParser, (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+module.exports = {app};
