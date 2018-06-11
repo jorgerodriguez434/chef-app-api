@@ -14,55 +14,58 @@ const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
 mongoose.connect(DATABASE_URL);
 
-app.get('/api/dishes', (req, res) => {
-  res.json({ status: 'success!' });
+app.get("/api/dishes", (req, res) => {
+  res.json({ status: "success!" });
 });
 
-app.post('/api/dishes', jsonParser, (req, res) => {
-  const requiredFields = [
-    'name',
-    'type',
-    'category',
-    'ingredients',
-    'hasGluten',
-    'hasMeat',
-    'hasDairy',
-    'hasEgg',
-    'glutenItems',
-    'meatItems',
-    'dairyItems',
-    'eggItems' ];
+app.post("/api/dishes", jsonParser, (req, res) => {
+  const {
+    name,
+    type,
+    category,
+    ingredients,
+    hasGluten,
+    hasMeat,
+    hasDairy,
+    hasEgg,
+    glutenItems,
+    meatItems,
+    dairyItems,
+    eggItems
+  } = req.body;
+  const isAnyPropertyMissing =
+    !name ||
+    !type ||
+    !category ||
+    !ingredients ||
+    !hasGluten ||
+    !hasMeat ||
+    !hasDairy ||
+    !hasEgg ||
+    !glutenItems ||
+    !meatItems ||
+    !dairyItems ||
+    !eggItems;
 
-  /*  for (let i=0; i<requiredFields.length; i++) {
-      const field = requiredFields[i];
-      if (!(field in req.body)) {
-        const message = `Missing \`${field}\` in request body`
-        console.error(message);
-        return res.status(400).send(message);
-      }
-    } */
+  if (isAnyPropertyMissing) {
+    console.log("All fields are required!");
+    return res.status(400).json({ Message: "All fields are required!" });
+  }
 
-    requiredFields.map(field => {
-      if (!(field in req.body)){
-        const message = `Missing ${field} in request body`;
-        return res.status(400).send(message);
-      }
-    })
-
-  console.log('making a POST request');
+  console.log("making a POST request");
   Dish.create({
-    name: req.body.name,
-    type: req.body.type,
-    category: req.body.category,
-    ingredient: req.body.ingredient,
-    hasGluten: req.body.hasGluten,
-    hasMeat: req.body.hasMeat,
-    hasDairy: req.body.hasDairy,
-    hasEgg: req.body.hasEgg,
-    glutenItems: req.body.glutenItems,
-    meatItems: req.body.meatItems,
-    dairyItems: req.body.dairyItems,
-    eggItems: req.body.eggItems
+    name,
+    type,
+    category,
+    ingredient,
+    hasGluten,
+    hasMeat,
+    hasDairy,
+    hasEgg,
+    glutenItems,
+    meatItems,
+    dairyItems,
+    eggItems
   })
     .then(dish =>
       res.status(201).json({
@@ -73,45 +76,3 @@ app.post('/api/dishes', jsonParser, (req, res) => {
 });
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
-
-module.exports = { app };
-
-//https://infinite-cove-16211.herokuapp.com/
-//http://cocky-lumiere-0ee1f1.netlify.com/
-
-/*
-
-{
-   "name": "Blackhawk Burger",
-   "type": "Burger",
-   "category": "no-meat",
-   "ingredients": [
-      "Quinoa",
-      "Mushroom",
-      "Walnut",
-      "Lettuce",
-      "Tomato",
-      "Pickled_red_onions",
-      "Cucumber",
-      "Parmesan_mayo",
-      "Bun"
-   ],
-   "hasGluten": true,
-   "hasMeat": false,
-   "hasDairy": false,
-   "hasEgg": true,
-   "glutenItems": [
-      "BUN"
-   ],
-   "meatItems": [
-      "no meat"
-   ],
-   "dairyItems": [
-      "no dairy"
-   ],
-   "eggItems": [
-      "parmesan mayo"
-   ]
-}
-
-*/
