@@ -1,118 +1,58 @@
 const express = require("express");
 const app = express();
-const { Dish } = require("./models");
 const PORT = process.env.PORT || 8080;
 const cors = require("cors");
-const { CLIENT_ORIGIN } = require("./config");
-const bodyParser = require("body-parser");
-const jsonParser = bodyParser.json();
 const morgan = require("morgan");
-app.use(morgan("common"));
-
+const router = require("./router");
+const { CLIENT_ORIGIN } = require("./config");
 const { DATABASE_URL } = require("./config");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
-mongoose.connect(DATABASE_URL);
 
-app.get("/api/dishes", (req, res) => {
-  console.log("Making a GET request");
-  Dish.find().then(dishes => res.status(200).json(dishes));
-});
+app.use('/api/dishes', router);
+app.use(morgan("common"));
 
-app.post("/api/dishes", jsonParser, (req, res) => {
-  const requiredFields = [
-    "name",
-    "type",
-    "category",
-    "ingredients",
-    "hasGluten",
-    "hasMeat",
-    "hasDairy",
-    "hasEgg",
-    "glutenItems",
-    "meatItems",
-    "dairyItems",
-    "eggItems"
-  ];
+let server;
 
-  for (let i = 0; i < requiredFields.length; i++) {
-    const field = requiredFields[i];
-    if (!(field in req.body)) {
-      const message = `Missing \`${field}\` in request body`;
-      console.error(message);
-      return res.status(400).send(message);
-    }
-  }
-
-  /*requiredFields.map(field => {
-    if (!(field in req.body)) {
-      const message = `Missing \'${field}\' in request body`;
-      console.error(message);
-      return res.status(400).send(message);
-    }
-  });  */
-
-  console.log("Making a POST request");
-  Dish.create({
-    name: req.body.name,
-    type: req.body.type,
-    category: req.body.category,
-    ingredients: req.body.ingredients,
-    hasGluten: req.body.hasGluten,
-    hasMeat: req.body.hasMeat,
-    hasDairy: req.body.hasDairy,
-    hasEgg: req.body.hasEgg,
-    glutenItems: req.body.glutenItems,
-    meatItems: req.body.meatItems,
-    dairyItems: req.body.dairyItems,
-    eggItems: req.body.eggItems
-  })
-    .then(dish =>
-      res.status(201).json({
-        message: dish
-      })
-    )
-    .catch(err => console.log(err));
-});
-
-app.delete("/api/dishes/:id", (req, res) => {
-  console.log("Making a DELETE request");
-  Dish.findByIdAndRemove(req.params.id)
-    .then(dish => {
-      res.json({ message: "Dish has been deleted" });
-      res.status(200).end();
-    })
-    .catch(err => console.log(err));
-});
-
-app.put("/api/dishes/:id", jsonParser, (req, res) => {
-  console.log("Making a PUT request");
-  const id = req.params.id;
-  Dish.findByIdAndUpdate(
-    id,
-    {
-      $set: {
-        name: req.body.name,
-        type: req.body.type,
-        category: req.body.category,
-        ingredients: req.body.ingredients,
-        hasGluten: req.body.hasGluten,
-        hasMeat: req.body.hasMeat,
-        hasDairy: req.body.hasDairy,
-        hasEgg: req.body.hasEgg,
-        glutenItems: req.body.glutenItems,
-        meatItems: req.body.meatItems,
-        dairyItems: req.body.dairyItems,
-        eggItems: req.body.eggItems
+// this function connects to our database, then starts the server
+function runServer(databaseUrl, port = PORT) {
+  return new Promise((resolve, reject) => {
+    mongoose.connect(databaseUrl, err => {
+      if (err) {
+        return reject(err);
       }
-    },
-    { upsert: true, new: true }
-  )
-    .then(data => {
-      Dish.findById(data._id, (error, dish) => res.status(200).json(dish));
-    })
-    .catch(err => console.log(err));
-});
+      server = app.listen(port, () => {
+        console.log(`Your app is listening on port ${port} --June 2018`);
+        resolve();
+      })
+        .on('error', err => {
+          mongoose.disconnect();
+          reject(err);
+        });
+    });
+  });
+}
 
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
-module.exports = { app };
+// this function closes the server, and returns a promise. we'll
+// use it in our integration tests later.
+function closeServer() {
+  return mongoose.disconnect().then(() => {
+    return new Promise((resolve, reject) => {
+      console.log('Closing server');
+      server.close(err => {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
+    });
+  });
+}
+
+// if server.js is called directly (aka, with `node server.js`), this block
+// runs. but we also export the runServer command so other code (for instance, test code) can start the server as needed.
+if (require.main === module) {
+  runServer(DATABASE_URL).catch(err => console.error(err));
+}
+
+module.exports = {app, runServer, closeServer };
