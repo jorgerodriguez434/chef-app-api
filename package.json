@@ -18,7 +18,11 @@
     "express-favicon": "^2.0.1",
     "mocha": "^5.2.0",
     "mongoose": "^5.1.4",
+<<<<<<< HEAD
     "serve-favicon": "^2.5.0",
+=======
+    "morgan": "^1.9.0",
+>>>>>>> f52fdfb1b7c765c2033afc4f70abbaaa428d5e96
     "ve": "^0.1.3"
   }
 }
