@@ -15,16 +15,8 @@ mongoose.Promise = global.Promise;
 mongoose.connect(DATABASE_URL);
 
 app.get("/api/dishes", (req, res) => {
-  console.log('making a GET request');
-  Dish.find()
-  .then(dishes => res.status(200).json(dishes));
-
-  //.then(data => {
-   // Dish.findById(data._id, (error, dish) => res.status(201).json(dish))});
- 
-   /* res.json({
-        status: 200
-    });  */
+  console.log("Making a GET request");
+  Dish.find().then(dishes => res.status(200).json(dishes));
 });
 
 app.post("/api/dishes", jsonParser, (req, res) => {
@@ -43,24 +35,24 @@ app.post("/api/dishes", jsonParser, (req, res) => {
     "eggItems"
   ];
 
-   for (let i=0; i<requiredFields.length; i++) {
+  for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
-      const message = `Missing \`${field}\` in request body`
+      const message = `Missing \`${field}\` in request body`;
       console.error(message);
       return res.status(400).send(message);
     }
   }
 
-/*  requiredFields.map(field => {
+  /*requiredFields.map(field => {
     if (!(field in req.body)) {
       const message = `Missing \'${field}\' in request body`;
       console.error(message);
       return res.status(400).send(message);
     }
-  }); */
+  });  */
 
-  console.log("making a POST request");
+  console.log("Making a POST request");
   Dish.create({
     name: req.body.name,
     type: req.body.type,
@@ -83,5 +75,17 @@ app.post("/api/dishes", jsonParser, (req, res) => {
     .catch(err => console.log(err));
 });
 
+app.delete("/api/dishes/:id", (req, res) => {
+  console.log("Making a DELETE request");
+  Dish.findByIdAndRemove(req.params.id)
+    .then(dish => {
+      res.json({ message: "Dish has been deleted" });
+      res.status(200).end();
+    })
+    .catch(err => console.log(err));
+});
+
+
+
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
-module.exports = {app};
+module.exports = { app };
