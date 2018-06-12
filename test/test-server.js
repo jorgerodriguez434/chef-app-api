@@ -79,8 +79,70 @@ describe("API", function() {
         expect(res.body.dish.dairyItems).to.deep.equal(["No dairy"]);
         expect(res.body.dish.eggItems).to.deep.equal(["Parmesan mayo"]);
       });
-  }); //it
+  });
 
+  it("should return 200 on DELETE requests", function() {
+    return chai
+      .request(app)
+      .delete("/api/dishes/5b1f37eb22eeeec0c713deef")
+      .then(function(res) {
+        expect(res).to.have.status(200);
+        expect(res.body.message).to.equal("Dish has been deleted");
+      });
+  });
 
-
+  it("should update and return updated json object on PUT request with 200 status code", function() {
+    return chai
+      .request(app)
+      .put("/api/dishes/5b1f37eb22eeeec0c713deef")
+      .send({
+        name: "Badger Burger",
+        type: "Burger",
+        category: "No meat",
+        ingredients: [
+          "Quinoa",
+          "Mushroom",
+          "Walnut",
+          "Lettuce",
+          "Tomato",
+          "Pickled red onions",
+          "Cucumber",
+          "Parmesan mayo",
+          "Bun"
+        ],
+        hasGluten: true,
+        hasMeat: false,
+        hasDairy: false,
+        hasEgg: true,
+        glutenItems: ["Bun"],
+        meatItems: ["No meat"],
+        dairyItems: ["No dairy"],
+        eggItems: ["Parmesan mayo"]
+      })
+      .then(function(res) {
+        expect(res).to.be.json;
+        expect(res.body.name).to.equal("Badger Burger");
+        expect(res.body.type).to.equal("Burger");
+        expect(res.body.category).to.equal("No meat");
+        expect(res.body.ingredients).to.deep.equal([
+          "Quinoa",
+          "Mushroom",
+          "Walnut",
+          "Lettuce",
+          "Tomato",
+          "Pickled red onions",
+          "Cucumber",
+          "Parmesan mayo",
+          "Bun"
+        ]);
+        expect(res.body.hasGluten).to.equal(true);
+        expect(res.body.hasMeat).to.equal(false);
+        expect(res.body.hasDairy).to.equal(false);
+        expect(res.body.hasEgg).to.equal(true);
+        expect(res.body.glutenItems).to.deep.equal(["Bun"]);
+        expect(res.body.meatItems).to.deep.equal(["No meat"]);
+        expect(res.body.dairyItems).to.deep.equal(["No dairy"]);
+        expect(res.body.eggItems).to.deep.equal(["Parmesan mayo"]);
+      });
+  });
 }); //describe
