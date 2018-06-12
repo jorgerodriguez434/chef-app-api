@@ -9,9 +9,22 @@ const jsonParser = bodyParser.json();
 const morgan = require("morgan");
 app.use(morgan("common"));
 
+const { DATABASE_URL } = require("./config");
+const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
+mongoose.connect(DATABASE_URL);
 
 app.get("/api/dishes", (req, res) => {
-  res.json({ status: "success!" });
+  console.log('making a GET request');
+  Dish.find()
+  .then(dishes => res.status(200).json(dishes));
+
+  //.then(data => {
+   // Dish.findById(data._id, (error, dish) => res.status(201).json(dish))});
+ 
+   /* res.json({
+        status: 200
+    });  */
 });
 
 app.post("/api/dishes", jsonParser, (req, res) => {

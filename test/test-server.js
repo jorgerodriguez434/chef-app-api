@@ -3,7 +3,7 @@ const chaiHttp = require('chai-http');
 
 const {app} = require('../server');
 
-const should = chai.should();
+const expect = chai.expect;
 chai.use(chaiHttp);
 
 describe('API', function() {
@@ -12,7 +12,8 @@ describe('API', function() {
     return chai.request(app)
       .get('/api/dishes')
       .then(function(res) {
-        res.should.be.json;
+        expect(res).to.be.json;
+        expect(res).to.have.status(200);
       });
   });
 });
