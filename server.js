@@ -57,7 +57,7 @@ app.post("/api/dishes", jsonParser, (req, res) => {
     name: req.body.name,
     type: req.body.type,
     category: req.body.category,
-    ingredients: req.body.ingredient,
+    ingredients: req.body.ingredients,
     hasGluten: req.body.hasGluten,
     hasMeat: req.body.hasMeat,
     hasDairy: req.body.hasDairy,
@@ -85,7 +85,34 @@ app.delete("/api/dishes/:id", (req, res) => {
     .catch(err => console.log(err));
 });
 
-
+app.put("/api/dishes/:id", jsonParser, (req, res) => {
+  console.log("Making a PUT request");
+  const id = req.params.id;
+  Dish.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        name: req.body.name,
+        type: req.body.type,
+        category: req.body.category,
+        ingredients: req.body.ingredients,
+        hasGluten: req.body.hasGluten,
+        hasMeat: req.body.hasMeat,
+        hasDairy: req.body.hasDairy,
+        hasEgg: req.body.hasEgg,
+        glutenItems: req.body.glutenItems,
+        meatItems: req.body.meatItems,
+        dairyItems: req.body.dairyItems,
+        eggItems: req.body.eggItems
+      }
+    },
+    { upsert: true, new: true }
+  )
+    .then(data => {
+      Dish.findById(data._id, (error, dish) => res.status(200).json(dish));
+    })
+    .catch(err => console.log(err));
+});
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
 module.exports = { app };
