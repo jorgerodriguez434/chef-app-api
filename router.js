@@ -61,7 +61,7 @@ router.post("/", jsonParser, (req, res) => {
   })
     .then(dish =>
       res.status(201).json({
-        message: dish
+        dish
       })
     )
     .catch(err => console.log(err));
