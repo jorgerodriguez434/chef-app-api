@@ -8,7 +8,8 @@ const jsonParser = bodyParser.json();
 
 router.get("/", (req, res) => {
   console.log("Making a GET request");
-  Dish.find().then(dishes => res.status(200).json(dishes));
+  Dish.find().then(dishes => res.status(200).json(dishes))
+  .catch(err => console.log(err));
 });
 
 router.post("/", jsonParser, (req, res) => {
@@ -70,8 +71,8 @@ router.post("/", jsonParser, (req, res) => {
 router.delete("/:id", (req, res) => {
   console.log("Making a DELETE request");
   Dish.findByIdAndRemove(req.params.id)
-    .then(dish => {
-      res.json({ message: "Dish has been deleted" });
+    .then(() => {
+      res.json({ message: `Dish has been deleted` });
       res.status(200).end();
     })
     .catch(err => console.log(err));
@@ -100,8 +101,11 @@ router.put("/:id", jsonParser, (req, res) => {
     },
     { upsert: true, new: true }
   )
-    .then(data => {
-      Dish.findById(data._id, (error, dish) => res.status(200).json(dish));
+    .then(dish => {
+      console.log(dish);
+      res.json({
+        dish
+      });
     })
     .catch(err => console.log(err));
 });
