@@ -16,16 +16,8 @@ router.post("/", jsonParser, (req, res) => {
   const requiredFields = [
     "name",
     "type",
-    "category",
-    "ingredients",
-    "hasGluten",
-    "hasMeat",
-    "hasDairy",
-    "hasEgg",
-    "glutenItems",
-    "meatItems",
-    "dairyItems",
-    "eggItems"
+    "categories",
+    "ingredients"
   ];
 
   for (let i = 0; i < requiredFields.length; i++) {
@@ -50,15 +42,7 @@ router.post("/", jsonParser, (req, res) => {
     name: req.body.name,
     type: req.body.type,
     category: req.body.category,
-    ingredients: req.body.ingredients,
-    hasGluten: req.body.hasGluten,
-    hasMeat: req.body.hasMeat,
-    hasDairy: req.body.hasDairy,
-    hasEgg: req.body.hasEgg,
-    glutenItems: req.body.glutenItems,
-    meatItems: req.body.meatItems,
-    dairyItems: req.body.dairyItems,
-    eggItems: req.body.eggItems
+    ingredients: req.body.ingredients
   })
     .then(dish =>
       res.status(201).json({
