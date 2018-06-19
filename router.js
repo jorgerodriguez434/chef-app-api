@@ -16,7 +16,6 @@ router.post("/", jsonParser, (req, res) => {
   const requiredFields = [
     "name",
     "type",
-    "categories",
     "ingredients"
   ];
 
@@ -41,7 +40,6 @@ router.post("/", jsonParser, (req, res) => {
   Dish.create({
     name: req.body.name,
     type: req.body.type,
-    category: req.body.category,
     ingredients: req.body.ingredients
   })
     .then(dish =>
@@ -71,16 +69,7 @@ router.put("/:id", jsonParser, (req, res) => {
       $set: {
         name: req.body.name,
         type: req.body.type,
-        category: req.body.category,
         ingredients: req.body.ingredients,
-        hasGluten: req.body.hasGluten,
-        hasMeat: req.body.hasMeat,
-        hasDairy: req.body.hasDairy,
-        hasEgg: req.body.hasEgg,
-        glutenItems: req.body.glutenItems,
-        meatItems: req.body.meatItems,
-        dairyItems: req.body.dairyItems,
-        eggItems: req.body.eggItems
       }
     },
     { upsert: true, new: true }
