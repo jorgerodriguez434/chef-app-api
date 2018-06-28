@@ -43,6 +43,7 @@ describe("API", function() {
           "Parmesan mayo",
           "Bun"
         ],
+        image: "image.jpg"
       })
       .then(function(res) {
         expect(res).to.be.json;
@@ -59,6 +60,7 @@ describe("API", function() {
           "Parmesan mayo",
           "Bun"
         ]);
+        expect(res.body.dish.image).to.equal("image.jpg");
       });
   });
 
@@ -90,6 +92,7 @@ describe("API", function() {
           "Parmesan mayo",
           "Bun"
         ],
+        image: "image.jpg"
       })
       .then(function(res) {
         expect(res).to.be.json;
@@ -106,6 +109,7 @@ describe("API", function() {
           "Parmesan mayo",
           "Bun"
         ]);
+        expect(res.body.dish.image).to.equal("image.jpg");
       });
   });
 }); //describe
