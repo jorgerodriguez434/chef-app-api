@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const DishSchema = mongoose.Schema({
 
   name: String,
-  type: String,
-  categories: Array,
   ingredients: Array,
+  categories: Array,
+  image: String,
   created: {type: Date, default: Date.now}
 
 });

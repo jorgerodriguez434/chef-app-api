@@ -15,7 +15,6 @@ router.get("/", (req, res) => {
 router.post("/", jsonParser, (req, res) => {
   const requiredFields = [
     "name",
-    "type",
     "ingredients"
   ];
 
@@ -28,26 +27,20 @@ router.post("/", jsonParser, (req, res) => {
     }
   }
 
-  /*requiredFields.map(field => {
-      if (!(field in req.body)) {
-        const message = `Missing \'${field}\' in request body`;
-        console.error(message);
-        return res.status(400).send(message);
-      }
-    });  */
-
   console.log("Making a POST request");
+  console.log(res.body);
   Dish.create({
     name: req.body.name,
-    type: req.body.type,
-    ingredients: req.body.ingredients
+    ingredients: req.body.ingredients,
+    categories: req.body.categories,
+    image: req.body.image
   })
     .then(dish =>
       res.status(201).json({
         dish
       })
     )
-    .catch(err => console.log(err));
+    .catch(err => console.log(err)); 
 });
 
 router.delete("/:id", (req, res) => {
@@ -70,12 +63,14 @@ router.put("/:id", jsonParser, (req, res) => {
         name: req.body.name,
         type: req.body.type,
         ingredients: req.body.ingredients,
+        categories: req.body.categories,
+        image:req.body.image
       }
     },
     { upsert: true, new: true }
   )
     .then(dish => {
-      console.log(dish);
+      //console.log(dish);
       res.json({
         dish
       });
