@@ -15,7 +15,8 @@ router.get("/", (req, res) => {
 router.post("/", jsonParser, (req, res) => {
   const requiredFields = [
     "name",
-    "ingredients"
+    "ingredients",
+    //"image"
   ];
 
   for (let i = 0; i < requiredFields.length; i++) {
@@ -28,7 +29,7 @@ router.post("/", jsonParser, (req, res) => {
   }
 
   console.log("Making a POST request");
-  console.log(res.body);
+  //console.log(req.body);
   Dish.create({
     name: req.body.name,
     ingredients: req.body.ingredients,

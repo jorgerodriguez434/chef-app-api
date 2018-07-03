@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
-const router = require("./router");
+const dishRouter = require("./router");
+const userRouter = require("./users/router");
 const { CLIENT_ORIGIN, DATABASE_URL, PORT } = require("./config");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
@@ -13,7 +14,8 @@ app.use(
   })
 );
 
-app.use('/api/dishes', router);
+app.use('/api/dishes', dishRouter);
+app.use('/api/users', userRouter);
 app.use(morgan("common"));
 
 let server;
