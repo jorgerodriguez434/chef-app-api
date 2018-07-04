@@ -4,6 +4,9 @@ const cors = require("cors");
 const morgan = require("morgan");
 const dishRouter = require("./router");
 const userRouter = require("./users/router");
+//const { router: userRouter } = require('./users');
+const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
+const passport = require('passport');
 const { CLIENT_ORIGIN, DATABASE_URL, PORT } = require("./config");
 const mongoose = require("mongoose");
 mongoose.Promise = global.Promise;
@@ -13,10 +16,28 @@ app.use(
       origin: CLIENT_ORIGIN
   })
 );
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 app.use('/api/dishes', dishRouter);
 app.use('/api/users', userRouter);
+//app.use('/api/auth', authRouter);
 app.use(morgan("common"));
+ 
+/*
+
+const jwtAuth = passport.authenticate('jwt', { session: false });
+
+// A protected endpoint which needs a valid JWT to access it
+app.get('/api/protected', jwtAuth, (req, res) => {
+  return res.json({
+    data: 'rosebud'
+  });
+});
+
+app.use('*', (req, res) => {
+  return res.status(404).json({ message: 'Not Found' });
+}); */
 
 let server;
 
