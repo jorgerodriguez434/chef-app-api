@@ -21,7 +21,7 @@ passport.use(jwtStrategy);
 
 app.use('/api/dishes', dishRouter);
 app.use('/api/users', userRouter);
-//app.use('/api/auth', authRouter);
+app.use('/api/auth', authRouter);
 app.use(morgan("common"));
  
 /*
