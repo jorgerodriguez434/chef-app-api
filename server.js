@@ -3,8 +3,7 @@ const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
 const dishRouter = require("./router");
-const userRouter = require("./users/router");
-//const { router: userRouter } = require('./users');
+const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 const passport = require('passport');
 const { CLIENT_ORIGIN, DATABASE_URL, PORT } = require("./config");
@@ -20,14 +19,12 @@ passport.use(localStrategy);
 passport.use(jwtStrategy);
 
 app.use('/api/dishes', dishRouter);
-app.use('/api/users', userRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 app.use(morgan("common"));
  
-/*
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
-
 // A protected endpoint which needs a valid JWT to access it
 app.get('/api/protected', jwtAuth, (req, res) => {
   return res.json({
@@ -36,8 +33,8 @@ app.get('/api/protected', jwtAuth, (req, res) => {
 });
 
 app.use('*', (req, res) => {
-  return res.status(404).json({ message: 'Not Found' });
-}); */
+  return res.status(404).json({ message: 'try again' });
+}); 
 
 let server;
 
@@ -49,7 +46,7 @@ function runServer(databaseUrl, port = PORT) {
         return reject(err);
       }
       server = app.listen(port, () => {
-        console.log(`Your app is listening on port ${port} --June 2018`);
+        console.log(`Your app is listening on port ${port} --July 2018`);
         resolve();
       })
         .on('error', err => {
