@@ -3,10 +3,15 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const {User} = require('./models');
-
 const router = express.Router();
-
 const jsonParser = bodyParser.json();
+
+const passport = require('passport');
+const { localStrategy, jwtStrategy } = require('../auth');
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+const jwtAuth = passport.authenticate('jwt', { session: false });
+
 
 // Post to register a new user
 router.post('/', jsonParser, (req, res) => {
@@ -138,7 +143,7 @@ router.post('/', jsonParser, (req, res) => {
 // we're just doing this so we have a quick way to see
 // if we're creating users. keep in mind, you can also
 // verify this in the Mongo shell.
-router.get('/', (req, res) => {
+router.get('/', jwtAuth, (req, res) => {
   return User.find()
     .then(users => res.json(users.map(user => user.serialize())))
     .catch(err => res.status(500).json({message: "internal error"}));

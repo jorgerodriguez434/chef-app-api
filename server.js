@@ -2,39 +2,46 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const morgan = require("morgan");
+//const expressJWT = require("express-jwt");
+const mongoose = require("mongoose");
+mongoose.Promise = global.Promise;
+
+
 const dishRouter = require("./router");
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 const passport = require('passport');
 const { CLIENT_ORIGIN, DATABASE_URL, PORT } = require("./config");
-const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
+//const config = require("./config");
+
 
 app.use(
   cors({
       origin: CLIENT_ORIGIN
   })
 );
-passport.use(localStrategy);
-passport.use(jwtStrategy);
 
 app.use('/api/dishes', dishRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 app.use(morgan("common"));
- 
+
+passport.use(localStrategy);
+passport.use(jwtStrategy);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
 // A protected endpoint which needs a valid JWT to access it
 app.get('/api/protected', jwtAuth, (req, res) => {
   return res.json({
-    data: 'rosebud'
+    data: 'This is a protected endpoint',
+    code: 200,
+    message: "You have access! Great job!"
   });
-});
+}); 
 
 app.use('*', (req, res) => {
   return res.status(404).json({ message: 'try again' });
-}); 
+});  
 
 let server;
 
