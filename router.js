@@ -5,13 +5,13 @@ const { Dish } = require("./models");
 
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
+
 const passport = require('passport');
 const { localStrategy, jwtStrategy } = require('./auth');
-
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 const jwtAuth = passport.authenticate('jwt', { session: false });
-router.use(jwtAuth);
+//router.use(jwtAuth);
 
 router.get("/", (req, res) => {
   console.log("Making a GET request");
