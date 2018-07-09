@@ -1,4 +1,4 @@
-exports.CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "https://chef-app-client.herokuapp.com/";
+exports.CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "https://chef-app-client.herokuapp.com";
 exports.DATABASE_URL =
   process.env.DATABASE_URL ||
   global.DATABASE_URL ||
