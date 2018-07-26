@@ -25,6 +25,8 @@ router.post("/", jsonParser, (req, res) => {
     "ingredients",
   ];
 
+  if (req.body.ingredients.length === 0) res.status(400).json({message: "you must enter at least 1 ingredient!"})
+
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
