@@ -10,4 +10,5 @@ exports.JWT_SECRET = process.env.JWT_SECRET || "config.JWT_SECRET";
 exports.JWT_EXPIRY = process.env.JWT_EXPIRY || '7d';
 
 
-//https://chef-app-client.herokuapp.com/
+//https://chef-app-client.herokuapp.com
+//http://localhost:3000
