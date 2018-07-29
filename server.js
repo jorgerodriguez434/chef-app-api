@@ -25,6 +25,8 @@ app.use('/api/dishes', dishRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter);
 app.use(morgan("common"));
+//app.use(express.static('public'));
+
 
 passport.use(localStrategy);
 passport.use(jwtStrategy);
@@ -40,9 +42,12 @@ app.get('/api/protected', jwtAuth, (req, res) => {
 }); 
 
 app.use('*', (req, res) => {
-  return res.status(404).json({ message: 'try again' });
+  return res.status(404).json({ message: 'file not found', code: 404 });
 });  
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 let server;
 
 // this function connects to our database, then starts the server
