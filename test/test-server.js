@@ -112,4 +112,14 @@ describe("API", function() {
         expect(res.body.dish.image).to.equal("image.jpg");
       });
   });
+
 }); //describe
+
+
+
+
+
+
+
+
+

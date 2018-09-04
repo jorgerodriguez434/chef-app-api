@@ -13,7 +13,7 @@ passport.use(jwtStrategy);
 const jwtAuth = passport.authenticate('jwt', { session: false });
 //router.use(jwtAuth);
 
-router.get("/",  (req, res) => {
+router.get("/",  jwtAuth, (req, res) => {
   console.log("Making a GET request");
   Dish.find().then(dishes => res.status(200).json(dishes))
   .catch(err => console.log(err));
